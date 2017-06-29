@@ -1,0 +1,5 @@
+To compile this project the edit the pom.xml file, pointing the variable "cplex.jar.path" 
+to the location of the CPLEX jar in your file system.
+
+CPLEX bindings will only work if CPLEX is installed in your system 
+(the jar file is enough to compile the code, but not enough for the bindings to work). 
