@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pt.uminho.ceb.biosystems.mew</groupId>
-	<artifactId>mew-solvers-cplex</artifactId>
+	<artifactId>mew.solvers.cplex</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 
 
@@ -24,7 +24,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
