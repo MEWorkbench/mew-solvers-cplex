@@ -36,6 +36,7 @@ import ilog.concert.IloObjective;
 import ilog.concert.IloObjectiveSense;
 import ilog.concert.IloRange;
 import ilog.cplex.IloCplex;
+import pt.uminho.ceb.biosystems.mew.solvers.builders.CPLEXSolverBuilder;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.exceptions.InfeasibleProblemException;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.exceptions.SolverConstructionException;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.exceptions.SolverDefinitionException;
@@ -127,9 +128,9 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try{
 			cplex = new IloCplex();
 		} catch (Exception e) {
-			throw new SolverDefinitionException(CPLEXSolver.class,e);
+			throw new SolverDefinitionException(CPLEXSolverBuilder.ID,e);
 		} catch (Error e) {
-			throw new SolverDefinitionException(CPLEXSolver.class);
+			throw new SolverDefinitionException(CPLEXSolverBuilder.ID);
 		}
 		
 		setParam(cplex);
@@ -143,7 +144,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				populateCPLEXmemory(cplex);
 			
 //		} catch (SolverConstructionException e) {			
-//			throw new SolverConstructionException(CPLEXSolver.class);
+//			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 //		}
 			
 			
@@ -159,7 +160,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			cplex.solve();
 		} catch (Exception e) {	
-			throw new InfeasibleProblemException(CPLEXSolver.class);
+			throw new InfeasibleProblemException(CPLEXSolverBuilder.ID);
 		}
 		
 		
@@ -167,7 +168,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			baos.flush();
 		} catch (IOException e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 	
 		aux.flush();
@@ -176,7 +177,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			baos.close();
 		} catch (IOException e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 		aux.close();
@@ -188,7 +189,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			status = cplex.getStatus();
 		} catch (Exception e) {	
 			cplex.end();
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}		
 
 		//build the variable values list 		
@@ -200,7 +201,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		} catch (Exception e) {
 			cplex.end();
 //			e.printStackTrace();
-			throw new InfeasibleProblemException(CPLEXSolver.class, e);
+			throw new InfeasibleProblemException(CPLEXSolverBuilder.ID, e);
 
 		}
 		
@@ -216,7 +217,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			solution = new LPSolution(lpProblem, valuesList, convertCPLexStatus2LPSolutionType(status), cplex.getObjValue());
 		} catch (Exception e) {
 			cplex.end();
-			throw new InfeasibleProblemException(CPLEXSolver.class);
+			throw new InfeasibleProblemException(CPLEXSolverBuilder.ID);
 		}
 		
 		if(computeShadowPrices && !isMILPproblem){
@@ -228,7 +229,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				} catch (Exception e) {
 					cplex.end();
 					e.printStackTrace();
-					throw new InfeasibleProblemException(CPLEXSolver.class);
+					throw new InfeasibleProblemException(CPLEXSolverBuilder.ID);
 				}
 			}
 				
@@ -250,7 +251,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 					reducedCosts.addVariableValue(i, cplex.getReducedCost(variables[i]));
 				} catch (Exception e) {
 					cplex.end();
-					throw new InfeasibleProblemException(CPLEXSolver.class);
+					throw new InfeasibleProblemException(CPLEXSolverBuilder.ID);
 				}
 			}
 			solution.addPerVariableMetric("ReducedCosts", reducedCosts);
@@ -260,7 +261,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		
 		//explicitly free CPLEX memory
 		cplex.end();
-		solution.setSolverType(SolverType.CPLEX);
+		solution.setSolverType(CPLEXSolverBuilder.ID);
 		solution.setSolverOutput(solverOutput);
 
 		
@@ -296,7 +297,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				}
 				
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 				
 			variables[i] = cplexVar;
@@ -310,7 +311,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			try {
 				expression = cplex.linearNumExpr();
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 			
 			Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
@@ -319,7 +320,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				for(int idx : idxs)
 					expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), variables[idx]);
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 			
 			try {
@@ -335,7 +336,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 					break;
 				}
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 		}
 		
@@ -345,7 +346,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			ofExpression = cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		Set<Integer> idxs = lpProblem.getObjectiveFunction().getRow().getVarIdxs();
 		for(Integer idx : idxs){
@@ -355,7 +356,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 					variables[idx]
 				);
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 		}
 		
@@ -368,7 +369,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			objectiveFunction = cplex.objective(objectiveSense,ofExpression,"objectiveFunction");
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 		//add everything to CPLEX memory
@@ -379,7 +380,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 
 			cplex.add(objectiveFunction);
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 //		cplex.exportModel("cplex.mps");
@@ -405,7 +406,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				variables[i] = cplex.numVar(var.lowerBound, var.upperBound,IloNumVarType.Float);
 //				System.out.println("X"+i+"\t=\t"+var.getVariableName());
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 		}
 		
@@ -416,7 +417,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			try {
 				expression = cplex.linearNumExpr();
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 			Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
 			
@@ -424,7 +425,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				try {
 					expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), variables[idx]);
 				} catch (Exception e) {
-					throw new SolverConstructionException(CPLEXSolver.class);
+					throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 				}
 			
 			try {
@@ -435,7 +436,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				else if(constraint.getType().equals(LPConstraintType.LESS_THAN))
 					constraints[i] = cplex.le(expression, constraint.getRightSide());
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}
 		}
 		
@@ -465,7 +466,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 						variables[qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getVariableIndex2()]
 						);
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver.class);
+				throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 			}			
 		}
 		
@@ -473,14 +474,14 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 		try {
 			quadExpression = cplex.prod(0.5, cplex.sum(exprs));
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 		IloNumExpr finalExpression;
 		try {
 			finalExpression = cplex.sum(cplex.scalProd(varInOF, coeffs),quadExpression);
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 
@@ -493,7 +494,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			cplex.addMinimize(finalExpression);
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(CPLEXSolver.class);
+			throw new SolverConstructionException(CPLEXSolverBuilder.ID);
 		}
 		
 	
@@ -546,9 +547,9 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 			try{
 				cplex = new IloCplex();
 			} catch (Exception e) {
-				throw new SolverDefinitionException(CPLEXSolver.class,e);
+				throw new SolverDefinitionException(CPLEXSolverBuilder.ID,e);
 			} catch (Error e) {
-				throw new SolverDefinitionException(CPLEXSolver.class);
+				throw new SolverDefinitionException(CPLEXSolverBuilder.ID);
 			}
 			
 			setParam(cplex);
@@ -559,7 +560,7 @@ public class CPLEXSolver implements ILPSolver,IQPSolver{
 				populateCPLEXmemory(cplex);
 			cplex.exportModel(file);
 		} catch (IloException e1) {
-			throw new SolverException(getClass(),e1);
+			throw new SolverException(CPLEXSolverBuilder.ID,e1);
 		}
 		
 	}

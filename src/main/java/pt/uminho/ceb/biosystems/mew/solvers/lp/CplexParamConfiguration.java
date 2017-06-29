@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import pt.uminho.ceb.biosystems.mew.solvers.builders.CPLEXSolverBuilder;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.exceptions.SolverParametersException;
 
 public class CplexParamConfiguration {
@@ -64,7 +65,7 @@ public class CplexParamConfiguration {
 		try {
 			if (file != null) prop.load(file);
 		} catch (IOException e) {
-			throw new SolverParametersException(CPLEXSolver.class, "file", fileParamPath, "Properties");
+			throw new SolverParametersException(CPLEXSolverBuilder.ID, "file", fileParamPath, "Properties");
 		}
 		
 		addParams(prop);
@@ -101,7 +102,7 @@ public class CplexParamConfiguration {
 					obj = Boolean.parseBoolean(value);
 					setBooleanParam(param, (Boolean) obj);
 				} else {
-					throw new SolverParametersException(CPLEXSolver.class, param, value, "Double, Integer, Boolean");
+					throw new SolverParametersException(CPLEXSolverBuilder.ID, param, value, "Double, Integer, Boolean");
 				}
 			}
 		}
@@ -134,7 +135,7 @@ public class CplexParamConfiguration {
 		try {
 			cplex.setDefaults();
 		} catch (Exception e) {
-			throw new SolverParametersException(CPLEXSolver.class, "DEFAULT", "DEFAULT", "DEFAULT");
+			throw new SolverParametersException(CPLEXSolverBuilder.ID, "DEFAULT", "DEFAULT", "DEFAULT");
 		}
 		
 		setDoubleParameters(cplex);
@@ -156,19 +157,19 @@ public class CplexParamConfiguration {
 				cplex.setParam(param, objValue);
 			} catch (IllegalArgumentException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Double");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Double");
 			} catch (SecurityException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Double");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Double");
 			} catch (IllegalAccessException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Double");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Double");
 			} catch (NoSuchFieldException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Double");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Double");
 			} catch (Exception e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Double");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Double");
 			}
 		}
 	}
@@ -183,19 +184,19 @@ public class CplexParamConfiguration {
 				cplex.setParam(param, objValue);
 			} catch (IllegalArgumentException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Integer");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Integer");
 			} catch (SecurityException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Integer");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Integer");
 			} catch (IllegalAccessException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Integer");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Integer");
 			} catch (NoSuchFieldException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Integer");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Integer");
 			} catch (Exception e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Integer");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Integer");
 			}
 		}
 	}
@@ -213,20 +214,20 @@ public class CplexParamConfiguration {
 					cplex.setParam(param, objValue);
 				} catch (Exception e) {
 					if (objValue != null) value = objValue.toString();
-					throw new SolverParametersException(CPLEXSolver.class, id, value, "Boolean");
+					throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Boolean");
 				}
 			} catch (IllegalArgumentException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Boolean");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Boolean");
 			} catch (SecurityException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Boolean");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Boolean");
 			} catch (IllegalAccessException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Boolean");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Boolean");
 			} catch (NoSuchFieldException e) {
 				if (objValue != null) value = objValue.toString();
-				throw new SolverParametersException(CPLEXSolver.class, id, value, "Boolean");
+				throw new SolverParametersException(CPLEXSolverBuilder.ID, id, value, "Boolean");
 			}
 		}
 	}

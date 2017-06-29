@@ -1,18 +1,21 @@
 package pt.uminho.ceb.biosystems.mew.solvers.builders;
 
 import pt.uminho.ceb.biosystems.mew.solvers.ISolverBuilder;
-import pt.uminho.ceb.biosystems.mew.solvers.lp.CLPLPSolver;
+import pt.uminho.ceb.biosystems.mew.solvers.SolverFactory;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.CPLEXSolver;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.ILPSolver;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.LPProblem;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.exceptions.SolverDefinitionException;
-import pt.uminho.ceb.biosystems.mew.solvers.qp.CLPQPSolver;
 import pt.uminho.ceb.biosystems.mew.solvers.qp.IQPSolver;
 import pt.uminho.ceb.biosystems.mew.solvers.qp.QPProblem;
 
 public class CPLEXSolverBuilder implements ISolverBuilder{
 
+	
 	public static String ID = "CPLEX";
+	static{
+		SolverFactory.getInstance().registSolver(new CPLEXSolverBuilder());
+	}
 	
 	@Override
 	public boolean isLP() {

@@ -37,6 +37,8 @@ import ilog.concert.IloObjective;
 import ilog.concert.IloObjectiveSense;
 import ilog.concert.IloRange;
 import ilog.cplex.IloCplex;
+import pt.uminho.ceb.biosystems.mew.solvers.builders.CPLEX3SolverBuilder;
+import pt.uminho.ceb.biosystems.mew.solvers.lp.CplexParamConfiguration;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.ILPSolver;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.LPConstraint;
 import pt.uminho.ceb.biosystems.mew.solvers.lp.LPConstraintType;
@@ -208,13 +210,13 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				}
 				
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			
 			_variables.add(i, cplexVar);
 			_mapLPvarToCPLEXvar.put(var, _variables.get(i));
 		}
-		if (_debug_time) System.out.println("[" + getClass().getSimpleName() + "]: populateCPLEXMemory - variables: \t" + TimeUtils.formatMillis(System.currentTimeMillis() - initTime));
+		if (_debug_time) System.out.println("[" + CPLEX3SolverBuilder.ID + "]: populateCPLEXMemory - variables: \t" + TimeUtils.formatMillis(System.currentTimeMillis() - initTime));
 		
 		// populate the constraints
 		if (_debug_time) initTime = System.currentTimeMillis();
@@ -226,7 +228,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			try {
 				expression = cplex.linearNumExpr();
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
 			
@@ -234,7 +236,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				for (int idx : idxs)
 					expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), _variables.get(idx));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			
 			try {
@@ -250,27 +252,27 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 						break;
 				}
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			if (_debug_time) System.out.println("\tconstraint [" + constraint.toString() + "]: " + TimeUtils.formatMillis(System.currentTimeMillis() - subtime));
 			
 			_mapLPconstToCPLEXconst.put(constraint, _constraints.get(i));
 		}
-		if (_debug_time) System.out.println("[" + getClass().getSimpleName() + "]: populateCPLEXMemory - constraints: \t" + TimeUtils.formatMillis(System.currentTimeMillis() - initTime));
+		if (_debug_time) System.out.println("[" + CPLEX3SolverBuilder.ID + "]: populateCPLEXMemory - constraints: \t" + TimeUtils.formatMillis(System.currentTimeMillis() - initTime));
 		
 		if (_debug) System.out.println("update LP objective function");
 		IloLinearNumExpr ofExpression;
 		try {
 			ofExpression = cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		Set<Integer> idxs = _lpProblem.getObjectiveFunction().getRow().getVarIdxs();
 		for (Integer idx : idxs) {
 			try {
 				ofExpression.addTerm(_lpProblem.getObjectiveFunction().getRow().getTermCoefficient(idx), _variables.get(idx));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 		}
 		
@@ -281,7 +283,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			_objectiveFunction = cplex.objective(objectiveSense, ofExpression, "objectiveFunction");
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		// add everything to CPLEX memory
@@ -300,7 +302,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			cplex.add(_objectiveFunction);
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			
 		}
 	}
@@ -329,7 +331,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				_variables.add(i, cplex.numVar(var.lowerBound, var.upperBound, IloNumVarType.Float));
 //				System.out.println("X"+i+"\t=\t"+var.getVariableName());
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			_mapLPvarToCPLEXvar.put(var, _variables.get(i));
 		}
@@ -341,7 +343,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			try {
 				expression = cplex.linearNumExpr();
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
 			
@@ -350,7 +352,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 					expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), _variables.get(idx));
 				
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			
 			try {
@@ -360,7 +362,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 					_constraints.add(i, cplex.ge(expression, constraint.getRightSide()));
 				else if (constraint.getType().equals(LPConstraintType.LESS_THAN)) _constraints.add(i, cplex.le(expression, constraint.getRightSide()));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			_mapLPconstToCPLEXconst.put(constraint, _constraints.get(i));
 		}
@@ -386,7 +388,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				exprs[i] = cplex.prod(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getCoefficientValue(), _variables.get(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getVariableIndex1()),
 						_variables.get(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getVariableIndex2()));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 		}
 		
@@ -394,7 +396,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			quadExpression = cplex.prod(0.5, cplex.sum(exprs));
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		IloNumExpr finalExpression;
@@ -402,7 +404,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			finalExpression = cplex.sum(cplex.scalProd(varsInOF, coeffs), quadExpression);
 			_objectiveFunction = cplex.objective(IloObjectiveSense.Minimize, finalExpression);
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		// add everything to CPLEX memory
@@ -420,7 +422,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			
 			cplex.add(_objectiveFunction);
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 	}
 	
@@ -436,14 +438,14 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			ofExpression = _cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		Set<Integer> idxs = _lpProblem.getObjectiveFunction().getRow().getVarIdxs();
 		for (Integer idx : idxs) {
 			try {
 				ofExpression.addTerm(_lpProblem.getObjectiveFunction().getRow().getTermCoefficient(idx), _variables.get(idx));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 		}
 		
@@ -483,7 +485,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				exprs[i] = _cplex.prod(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getCoefficientValue(), _variables.get(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getVariableIndex1()),
 						_variables.get(_qpProblem.getQPObjectiveFunction().getQpRow().getTerm(i).getVariableIndex2()));
 			} catch (Exception e) {
-				throw new SolverConstructionException(getClass(), e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 		}
 		
@@ -491,14 +493,14 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			quadExpression = _cplex.prod(0.5, _cplex.sum(exprs));
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		IloNumExpr finalExpression;
 		try {
 			finalExpression = _cplex.sum(_cplex.scalProd(varsInOF, coeffs), quadExpression);
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		_objectiveFunction.setName("objectiveFunction");
@@ -512,9 +514,10 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			_cplex.setDefaults();
 			//			_cplex.setDeleteMode(DeleteMode.FixBasis); 	// pivots and fixes the basis in order to guarantee that a valid basis is still available upon removal of variables 
 			setParam(_cplex);
-			
+		} catch (UnsatisfiedLinkError e1){
+			throw new SolverDefinitionException(CPLEX3SolverBuilder.ID);
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		try {
@@ -523,7 +526,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			else
 				populateCPLEXmemory(_cplex);
 		} catch (SolverConstructionException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		_initializations++;
@@ -537,9 +540,9 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		if (_cplex == null) try {
 			initializeSolver();
 		} catch (SolverDefinitionException e) {
-			throw new SolverDefinitionException(getClass(), e);
+			throw new SolverDefinitionException(CPLEX3SolverBuilder.ID, e);
 		} catch (SolverConstructionException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		// the solver output
@@ -552,14 +555,14 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			_cplex.solve();
 		} catch (Exception e) {
-			throw new InfeasibleProblemException(getClass(), e);
+			throw new InfeasibleProblemException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		// flush, close, re-link
 		try {
 			baos.flush();
 		} catch (IOException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		aux.flush();
@@ -568,7 +571,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			baos.close();
 		} catch (IOException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		aux.close();
 		
@@ -577,7 +580,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			status = _cplex.getStatus();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		// build the variable values list
@@ -590,7 +593,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			solutionValues = _cplex.getValues(vars);
 		} catch (Exception e) {
 			//			e.printStackTrace();
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		for (int i = 0; i < solutionValues.length; i++) {
@@ -601,7 +604,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			solution = new LPSolution(_lpProblem, valuesList, convertCPLexStatus2LPSolutionType(status), _cplex.getObjValue());
 		} catch (Exception e) {
-			new InfeasibleProblemException(getClass(), e);
+			new InfeasibleProblemException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		if (_computeShadowPrices && !_isMILPproblem) {
@@ -612,7 +615,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 					shadowPrices.addVariableValue(i, _cplex.getDual(_constraints.get(i)));
 				}
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver3.class, e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			
 			solution.addPerConstraintMetric("ShadowPrices", shadowPrices);
@@ -626,12 +629,12 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 					reducedCosts.addVariableValue(i, _cplex.getReducedCost(_variables.get(i)));
 				}
 			} catch (Exception e) {
-				throw new SolverConstructionException(CPLEXSolver3.class, e);
+				throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			solution.addPerVariableMetric("ReducedCosts", reducedCosts);
 		}
 		
-		solution.setSolverType(SolverType.CPLEX);
+		solution.setSolverType(CPLEX3SolverBuilder.ID);
 		solution.setSolverOutput(_solverOutput);
 		
 		return solution;
@@ -669,7 +672,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			expression = _cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
 		
@@ -678,7 +681,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), _variables.get(idx));
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		int index = _constraints.size();
@@ -689,13 +692,13 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				_constraints.add(index, _cplex.ge(expression, constraint.getRightSide()));
 			else if (constraint.getType().equals(LPConstraintType.LESS_THAN)) _constraints.add(index, _cplex.le(expression, constraint.getRightSide()));
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		_mapLPconstToCPLEXconst.put(constraint, _constraints.get(index));
 		try {
 			_cplex.add(_constraints.get(index));
 		} catch (IloException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 	}
 	
@@ -704,7 +707,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			expression = _cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		Set<Integer> idxs = newConstraint.getLeftSide().getVarIdxs();
 		
@@ -721,7 +724,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 //				System.out.println("AFTER = "+(_mapLPconstToCPLEXconst.get(oldConstraint)).toString());	
 			} catch (Exception e) {
 				e.printStackTrace();
-				//					throw new SolverConstructionException(getClass(), e);
+				//					throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 			}
 			_mapLPconstToCPLEXconst.put(newConstraint, _mapLPconstToCPLEXconst.get(oldConstraint));
 			_mapLPconstToCPLEXconst.remove(oldConstraint);
@@ -734,7 +737,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 			}
 			
 		} catch (Exception e) {			
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 	}
@@ -744,7 +747,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			expression = _cplex.linearNumExpr();
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		Set<Integer> idxs = constraint.getLeftSide().getVarIdxs();
 		
@@ -753,7 +756,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				expression.addTerm(constraint.getLeftSide().getTermCoefficient(idx), _variables.get(idx));
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		try {
@@ -763,13 +766,13 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				_constraints.add(index, _cplex.ge(expression, constraint.getRightSide()));
 			else if (constraint.getType().equals(LPConstraintType.LESS_THAN)) _constraints.add(index, _cplex.le(expression, constraint.getRightSide()));
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		_mapLPconstToCPLEXconst.put(constraint, _constraints.get(index));
 		try {
 			_cplex.add(_constraints.get(index));
 		} catch (IloException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 	}
 	
@@ -785,7 +788,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				cplexVar = _cplex.numVar(variable.lowerBound, variable.upperBound, IloNumVarType.Float, "X" + index);
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		_variables.add(index, cplexVar);
@@ -793,7 +796,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			_cplex.add(_variables.get(index));
 		} catch (IloException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 	}
@@ -809,7 +812,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 				cplexVar = _cplex.numVar(variable.lowerBound, variable.upperBound, IloNumVarType.Float, "X" + index);
 			
 		} catch (Exception e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 		_variables.add(index, cplexVar);
@@ -817,7 +820,7 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 		try {
 			_cplex.add(_variables.get(index));
 		} catch (IloException e) {
-			throw new SolverConstructionException(getClass(), e);
+			throw new SolverConstructionException(CPLEX3SolverBuilder.ID, e);
 		}
 		
 	}
