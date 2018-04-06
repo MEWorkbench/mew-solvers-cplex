@@ -22,9 +22,9 @@ before_script:
   - sed -i 's,RELEASE_REPO_KEY,'"$RELEASE_REPO_KEY"',g' configuration.yml
   - sed -i 's,ARTIFACTORY_JCENTER_REPO_KEY,'"$ARTIFACTORY_JCENTER_REPO_KEY"',g' configuration.yml
   # modify settings.xml
-  - sed -i 's,ARTIFACTORY_URL,'"$ARTIFACTORY_URL"',g' settings.yml
-  - sed -i 's,ARTIFACTORY_USER,'"$ARTIFACTORY_USER"',g' settings.yml
-  - sed -i 's,ARTIFACTORY_PASS,'"$ARTIFACTORY_PASS"',g' settings.yml
+  - sed -i 's,ARTIFACTORY_URL,'"$ARTIFACTORY_URL"',g' settings.xml
+  - sed -i 's,ARTIFACTORY_USER,'"$ARTIFACTORY_USER"',g' settings.xml
+  - sed -i 's,ARTIFACTORY_PASS,'"$ARTIFACTORY_PASS"',g' settings.xml
   # CPLEX JAR
   - mkdir -p ~/CPLEX/lib/
   - export CPLEX_HOME=~/CPLEX
