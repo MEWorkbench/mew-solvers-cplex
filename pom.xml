@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pt.uminho.ceb.biosystems.mew</groupId>
 	<artifactId>mew-solvers-cplex</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 
 	<name>solvers.cplex</name>
 	<description>Cplex solver project for MEWorkbench</description>
@@ -55,7 +55,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<cplex.jar.path>${env.CPLEX_HOME}/lib/cplex.jar</cplex.jar.path>
 		<project.sign.skip>true</project.sign.skip>
-		<meworkbench.version>1.0.1</meworkbench.version>
+		<meworkbench.version>1.0.2-SNAPSHOT</meworkbench.version>
 	</properties>
 
 	<scm>
