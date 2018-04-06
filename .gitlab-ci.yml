@@ -21,7 +21,7 @@ before_script:
   # CPLEX JAR
   - mkdir -p ~/CPLEX/lib/
   - export CPLEX_HOME=~CPLEX
-  - jfrog rt dl --flat true libs-release-local/com/ibm/ilog/cplex/1.2.5/cplex-1.2.5.jar $CPLEX_HOME/lib/cplex.jar
+  - ./jfrog rt dl --flat true libs-release-local/com/ibm/ilog/cplex/1.2.5/cplex-1.2.5.jar $CPLEX_HOME/lib/cplex.jar
 
 stages:
  - compile
