@@ -3,8 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <servers>
     <server>
-      <username>gitlabci</username>
-      <password>#!g1tl48!$</password>
+      <username>ARTIFACTORY_USER</username>
+      <password>ARTIFACTORY_PASS</password>
       <id>central</id>
     </server>
     <server>
