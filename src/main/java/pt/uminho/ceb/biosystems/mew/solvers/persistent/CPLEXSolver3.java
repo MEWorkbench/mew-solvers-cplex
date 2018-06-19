@@ -76,7 +76,6 @@ import pt.uminho.ceb.biosystems.mew.utilities.java.TimeUtils;
  * CPLEX connector using a persistent model for improved performance.
  * 
  * @author pmaia
- * @date Apr 21, 2014
  * @version 0.2
  * @since solvers2
  */
@@ -460,7 +459,6 @@ public class CPLEXSolver3 implements LPProblemListener, ILPSolver, IQPSolver {
 	/**
 	 * Re-assign the cplex objective function from the QPProblem
 	 * 
-	 * @param cplex
 	 * @throws IloException
 	 */
 	public void updateObjectiveFunctionQP() throws IloException {

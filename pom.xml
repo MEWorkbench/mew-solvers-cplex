@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pt.uminho.ceb.biosystems.mew</groupId>
 	<artifactId>mew-solvers-cplex</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 
 	<name>solvers.cplex</name>
 	<description>Cplex solver project for MEWorkbench</description>
@@ -53,9 +53,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<cplex.jar.path>${env.CPLEX_HOME}/lib/cplex.jar</cplex.jar.path>
+		<cplex.jar.path>${project.basedir}/lib/cplex.jar</cplex.jar.path>
 		<project.sign.skip>true</project.sign.skip>
-		<meworkbench.version>1.0.1</meworkbench.version>
+		<meworkbench.version>1.0.2-SNAPSHOT</meworkbench.version>
 	</properties>
 
 	<scm>
@@ -141,4 +141,23 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+<!-- 		<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>snapshots</id> -->
+<!-- 			<name>maven snapshots repo</name> -->
+<!-- 			<url>https://oss.sonatype.org/content/repositories/snapshots</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
+
+	<distributionManagement>
+		<repository>
+			<id>oss.sonatype.org</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>oss.sonatype.org</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
