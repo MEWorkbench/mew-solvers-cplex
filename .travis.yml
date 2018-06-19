@@ -2,12 +2,13 @@ language: java
 cache:
   directories:
     - $HOME/.gradle/caches/
-    - $HOME/MEWorkbench/solvers.cplex/lib
+    - $HOME/lib
 
 
 install:
   - wget https://drive.google.com/file/d/${CPLEX_SHARE_FILE}
-  - mv ${CPLEX_SHARE_FILE} $HOME/MEWorkbench/solvers.cplex/lib/cplex.jar
+  - mv ${CPLEX_SHARE_FILE} $HOME/lib/cplex.jar
+  - export CPLEX_JAR=$HOME/lib/cplex.jar
 
 script: echo "not testing"
 
