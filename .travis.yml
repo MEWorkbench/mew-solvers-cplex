@@ -5,9 +5,11 @@ cache:
     - $HOME/MEWorkbench/solvers.cplex/lib
 
 
-before_install:
+install:
   - wget https://drive.google.com/file/d/${CPLEX_SHARE_FILE}
   - mv ${CPLEX_SHARE_FILE} $HOME/MEWorkbench/solvers.cplex/lib/cplex.jar
+
+script: echo "not testing"
 
 deploy:
     provider: script
