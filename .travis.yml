@@ -2,12 +2,12 @@ language: java
 cache:
   directories:
     - $HOME/.gradle/caches/
-    - $HOME/lib
+    - $HOME/MEWorkbench/solvers.cplex/lib
 
 
 before_install:
   - wget https://drive.google.com/file/d/${CPLEX_SHARE_FILE}
-  - mv ${CPLEX_SHARE_FILE} $HOME/lib/cplex.jar
+  - mv ${CPLEX_SHARE_FILE} $HOME/MEWorkbench/solvers.cplex/lib/cplex.jar
 
 deploy:
     provider: script
