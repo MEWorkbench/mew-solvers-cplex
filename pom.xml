@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pt.uminho.ceb.biosystems.mew</groupId>
 	<artifactId>mew-solvers-cplex</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>${meworkbench.version}</version>
 
 	<name>solvers.cplex</name>
 	<description>Cplex solver project for MEWorkbench</description>
