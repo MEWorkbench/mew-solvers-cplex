@@ -3,6 +3,8 @@ cache:
   directories:
     - $HOME/.gradle/caches/
 
+install: echo "skip install"
+
 script: echo "not testing"
 
 deploy:
