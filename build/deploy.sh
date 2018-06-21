@@ -16,8 +16,8 @@ M2REPOSITORY=$H2_HOME/repository
 mkdir -p ${M2REPOSITORY}
 cp build/oss.sonatype.settings.xml ${H2_HOME}/settings.xml
 
-mkdir lib
-sshpass -p ${SSH_PASS} scp ${SSH_USER}@${SERVER_WITH_CPLEX}:cplex.jar lib/cplex.jar
+mkdir -p $HOME/lib
+sshpass -p ${SSH_PASS} scp ${SSH_USER}@${SERVER_WITH_CPLEX}:cplex.jar $HOME/lib/cplex.jar
 
 ls ${H2_HOME}
 
@@ -30,4 +30,4 @@ sed -i -e s/DEPLOYMENT_REPO_ID/$DEPLOYMENT_REPO_ID/g ${H2_HOME}/settings.xml
 #echo GPG_PRIVATE_KEY: $GPG_PRIVATE_KEY
 #gpg -v --batch --import <(echo "$GPG_PRIVATE_KEY")
 
-mvn -DskipTests=true -Dcplex.jar.path=lib/cplex.jar -s ${H2_HOME}/settings.xml -Dmaven.repo.local=$M2REPOSITORY deploy
+mvn -DskipTests=true -Dcplex.jar.path=$HOME/lib/cplex.jar -s ${H2_HOME}/settings.xml -Dmaven.repo.local=$M2REPOSITORY deploy
