@@ -3,10 +3,8 @@ cache:
   directories:
     - $HOME/.gradle/caches/
 
-before_instal:
+install:
     - sudo apt-get install -qq sshpass
-
-install: echo "skip install"
 
 script: echo "not testing"
 
