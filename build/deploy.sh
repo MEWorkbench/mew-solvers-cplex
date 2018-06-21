@@ -30,7 +30,8 @@ sed -i -e s/DEPLOYMENT_REPO_ID/$DEPLOYMENT_REPO_ID/g ${H2_HOME}/settings.xml
 #gpg -v --batch --import <(echo "$GPG_PRIVATE_KEY")
 
 mkdir -p $HOME/lib/
-sshpass -p ${SSH_PASS} scp -v ${SSH_USER}@${SERVER_WITH_CPLEX}:cplex.jar $HOME/lib/cplex.jar
-ls -lh $HOME/lib/
+sshpass -p ${SSH_PASS} scp -v -o "StrictHostKeyChecking no" ${SSH_USER}@${SERVER_WITH_CPLEX}:cplex.jar $HOME/lib/cplex.jar
+ls -lh $HOME/
+ls -lh $HOME/lib
 
 mvn -DskipTests=true -Dcplex.jar.path=$HOME/lib/cplex.jar -s ${H2_HOME}/settings.xml -Dmaven.repo.local=$M2REPOSITORY deploy
