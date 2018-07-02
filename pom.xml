@@ -53,7 +53,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<cplex.jar.path>${project.basedir}/lib/cplex.jar</cplex.jar.path>
+		<cplex.jar.path>${env.CPLEX_HOME}/lib/cplex.jar</cplex.jar.path>
 		<project.sign.skip>true</project.sign.skip>
 		<meworkbench.version>1.1.0</meworkbench.version>
 	</properties>
